@@ -6,22 +6,23 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 17:49:39 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/27 17:49:40 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/28 13:20:20 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
 #include "ft_sh1_prototypes.h"
 
-t_cmd		*cmd_init(void)
+t_general	*gen_init(void)
 {
-	t_cmd				*cmd_list;
+	t_general			*gen_list;
 
-	cmd_list = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd_list->cmd_line = 0;
-	cmd_list->pipe_list = 0;
-	cmd_list->next = 0;
-	return (cmd_list);
+	gen_list = (t_general *)malloc(sizeof(t_general));
+	gen_list->gen_line = 0;
+	gen_list->nbr_pipes = 0;
+	gen_list->pipe_list = 0;
+	gen_list->next = 0;
+	return (gen_list);
 }
 
 t_pipe		*pipe_init(void)
@@ -29,7 +30,14 @@ t_pipe		*pipe_init(void)
 	t_pipe				*pipe_list;
 
 	pipe_list = (t_pipe *)malloc(sizeof(t_pipe));
-	pipe_list->tab = 0;
+	pipe_list->pipe_line = 0;
+	pipe_list->cmd_tab = 0;
+	pipe_list->file_for_out = 0;
+	pipe_list->file_for_in = 0;
+	pipe_list->flag_1 = 0;
+	pipe_list->flag_2 = 0;
+	pipe_list->flag_3 = 0;
+	pipe_list->flag_4 = 0;
 	pipe_list->next = 0;
 	return (pipe_list);
 }

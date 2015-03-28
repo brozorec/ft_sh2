@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:52:07 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/27 18:39:15 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/28 13:19:48 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,53 +116,6 @@ char
 			++i;
 	}
 	return (cmd);
-}
-
-t_pipe
-	*get_pipe_lists(char *cmd_line)
-{
-	int					i;
-	char				**tab;
-	t_pipe				*pipe_list;
-	t_pipe				*head;
-
-	i = 0;
-	tab = ft_strsplit(cmd_line, '|');
-	pipe_list = pipe_init();
-	head = pipe_list;
-	while (tab[i])
-	{
-		pipe_list->tab = ft_strdup(tab[i]);
-		++i;
-	}
-	return (pipe_list);
-}
-
-t_cmd
-	*get_cmd_lists(char *line, t_cmd *cmd_list, char **env, t_res **res)
-{
-	int					i;
-	char				**tab;
-	t_cmd				*head;
-
-	i = 0;
-	tab = ft_strsplit(line, ';');
-	cmd_list = cmd_init();
-	head = cmd_list;
-	while (tab[i])
-	{
-		if (check_if_home(&tab[i], env, res) == -1)  // doesn't work in this way
-			return (0);
-		cmd_list->cmd_line = ft_strdup(tab[i]);
-		cmd_list->pipe_list = get_pipe_lists(cmd_list->cmd_line);
-		if (tab[++i])
-		{
-			cmd_list->next = cmd_init();
-			cmd_list = cmd_list->next;
-		}
-	}
-	cmd_list = head;
-	return (cmd_list);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 18:15:24 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/27 17:54:07 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/28 12:51:05 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	cd_options_err(char a);
 void	exit_err(int i);
 
 
-t_cmd		*get_cmd_lists(char *line, t_cmd *cmd_list, char **env, t_res **res);
-t_cmd		*cmd_init(void);
+t_general	*get_gen_lists(char *line, t_general *gen_list);
+t_general	*gen_init(void);
 t_pipe		*pipe_init(void);
 
 #endif

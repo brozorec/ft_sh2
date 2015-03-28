@@ -41,17 +41,30 @@ typedef struct			s_reserved
 	char				*home;
 }						t_res;
 
+/*  flag_1 = > 	*/
+/*  flag_2 = >> */
+/*  flag_3 = < 	*/
+/*  flag_4 = << */
+
 typedef struct			s_pipe
 {
-	char				**tab;
+	char				*pipe_line;
+	char				**cmd_tab;
+	char				*file_for_out;
+	char				*file_for_in;
+	int					flag_1;
+	int					flag_2;
+	int					flag_3;
+	int					flag_4;
 	struct s_pipe		*next;
 }						t_pipe;
 
-typedef struct			s_cmd
+typedef struct			s_general
 {
-	char				*cmd_line;
+	char				*gen_line;
+	int					nbr_pipes;
 	struct s_pipe		*pipe_list;
-	struct s_cmd		*next;
-}						t_cmd;
+	struct s_general	*next;
+}						t_general;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:50:48 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/27 16:06:06 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/28 19:09:38 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,12 @@ void		exit_eof(char ***cmd, char ***env, t_res **res)
 	exit(0);
 }
 
-void		print_cmd(t_cmd *list)
-{
-	while (list)
-	{
-		printf("%s\n", list->cmd_line);
-		list = list->next;
-	}
-}
-
-int			proceed(char ***env, t_res **res)
+int			proceed() //char ***env, t_res **res
 {
 	char				*line;
-	t_cmd				*cmd_list;
+	t_general			*gen_list;
 
-	cmd_list = 0;
+	gen_list = 0;
 	if (get_next_line(0, &line) == 0)
 		exit(0);		// exit_eof(cmd, env, res);
 	if (ft_strlen(line) == 0)
@@ -53,8 +44,9 @@ int			proceed(char ***env, t_res **res)
 		free(line);
 		return (1);
 	}
-	if ((cmd_list = get_cmd_lists(line, cmd_list, *env, res)) == 0)
+	if ((gen_list = get_gen_lists(line, gen_list)) == 0)
 	{
+		printf("%s\n", "main");
 		free(line);
 		return (1);
 	}
@@ -67,13 +59,13 @@ int			main(void)
 	char				**env;
 	t_res				*res;
 
-	signals();
+	// signals();
 	res = get_reserve(environ);
 	env = set_my_env(environ, 0, 0, 0);
 	ft_putstr("@>");
 	while (1)
 	{
-		if (proceed(&env, &res) == 1)
+		if (proceed() == 0)   // &env, &res
 			ft_putstr("@>");
 	}
 	return (0);

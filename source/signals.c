@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/10 13:03:19 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/24 12:25:06 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/28 17:45:16 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void		sig_handler(int sig)
 {
+	printf("%d\n", sig); //
 	if (sig == 11)
 	{
 		ft_putstr("exit\n");
@@ -34,7 +35,7 @@ void		signals(void)
 	int			i;
 
 	i = 1;
-	while (i <= 31)
+	while (i <= 31 && i != 2)   // remove 2nd condition
 	{
 		signal(i, sig_handler);
 		++i;
