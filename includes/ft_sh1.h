@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:51:32 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/27 17:16:44 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/29 18:11:30 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 # include <signal.h>
 # include "get_next_line.h"
 # include <stdio.h> // not authorized
+# include <errno.h> // not
+
+# define STDIN 0
+# define STDOUT 1
+# define READ_END 0
+# define WRITE_END 1
 
 typedef struct			s_cd
 {
@@ -52,6 +58,7 @@ typedef struct			s_pipe
 	char				**cmd_tab;
 	char				*file_for_out;
 	char				*file_for_in;
+	int					num;
 	int					flag_1;
 	int					flag_2;
 	int					flag_3;

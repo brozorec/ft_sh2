@@ -45,3 +45,19 @@ int			ft_len_to_char(char *str, char ch1, char ch2)
 		++i;
 	return (i);
 }
+
+int 		ft_count_char(char *str, int ch)
+{
+	int 				i;
+	int 				count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (ch == str[i])
+			++count;
+		++i;
+	}
+	return (count);
+}

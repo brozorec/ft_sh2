@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:15:13 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/23 17:53:59 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/29 19:30:16 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,96 @@ char		*path_to_exec(char **cmd, char **env, t_res *res)
 		err_msg(cmd[0]);
 		err_msg(": Command not found.\n");
 		ft_putstr("@>");
-		return (0);
+		exit(0);
 	}
 	return (path);
 }
 
+void		print_tab(char **tab)
+{
+	int					i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_putendl(tab[i]);
+		++i;
+	}
+}
+
+
+// if (is_builtin(pipe_list->cmd_tab) == 1 && pipe_list->num == nbr_pipes)
+// 			execute_builtin(pipe_list->cmd_tab, env, res);
+// 		else
+// 		{
+// 			execute_command(pipe_list->cmd_tab, *env, *res);
+// 		}
+
+void		execute_pipe_lists(t_pipe *pipe_list, int nbr_pipes, char **env, t_res *res)
+{
+	int			fd_tab[2 * nbr_pipes];
+	int			i;
+	int			j;
+
+	i = 0;
+	while (i < nbr_pipes)
+	{
+		pipe(fd_tab + (i * 2));
+		++i;
+	}
+	i = 0;
+	j = 0;
+	while (pipe_list)
+	{
+		if (fork() == 0)
+		{
+			if (pipe_list->next)
+			{
+				dup2(fd_tab[j + 1], STDOUT);
+			}
+			if (pipe_list->num != 0)
+			{
+				dup2(fd_tab[j - 2], STDIN);
+			}
+			while (i < 2 * nbr_pipes)
+			{
+				close(fd_tab[i]);
+				++i;
+			}
+			execute_command(pipe_list->cmd_tab, env, res);
+		}
+		pipe_list = pipe_list->next;
+		j += 2;
+	}
+	i = 0;
+	while (i < 2 * nbr_pipes)
+	{
+		close(fd_tab[i]);
+		++i;
+	}
+	while (nbr_pipes >= 0)
+	{
+		wait(0);
+		--nbr_pipes;
+	}
+}
+
 void		execute_command(char **cmd, char **env, t_res *res)
 {
-	pid_t		child;
-	int			status;
+	// pid_t		child;
+	// int			status;
 	char		*path;
 
 	if ((path = path_to_exec(cmd, env, res)) == 0)
 		return ;
-	if ((child = fork()) == 0)
+	if (execve(path, cmd, env) == -1)
 	{
-		if (execve(path, cmd, env) == -1)
-		{
-			err_msg(path);
-			free(path);
-			err_msg(": Command not found.\n");
-			exit(127);
-		}
+		err_msg(path);
+		free(path);
+		err_msg(": Command not found.\n");
+		exit(127);
 	}
-	waitpid(child, &status, WUNTRACED);
-	examine_status(status, child);
+	// waitpid(child, &status, WUNTRACED);
+	// examine_status(status, child);
 	free(path);
 }

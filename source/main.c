@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:50:48 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/28 19:09:38 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/29 18:43:54 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,43 @@ void		exit_eof(char ***cmd, char ***env, t_res **res)
 	exit(0);
 }
 
-int			proceed() //char ***env, t_res **res
+// void		print_tab(char **tab)
+// {
+// 	int					i;
+
+// 	i = 0;
+// 	while (tab[i])
+// 	{
+// 		printf("%s\n", tab[i]);
+// 		++i;
+// 	}
+// 	printf("%s\n", "\n");
+// }
+
+// void		print(t_general *g_list)
+// {
+// 	while (g_list)
+// 	{
+// 		while (g_list->pipe_list)
+// 		{
+// 			print_tab(g_list->pipe_list->cmd_tab);
+// 			g_list->pipe_list = g_list->pipe_list->next;
+// 		}
+// 		g_list = g_list->next;
+// 	}
+// }
+
+int			execute_gen_lists(t_general *gen_list, char ***env, t_res **res)
+{
+	while (gen_list)
+	{
+		execute_pipe_lists(gen_list->pipe_list, gen_list->nbr_pipes, *env, *res);
+		gen_list = gen_list->next;
+	}
+	return (0);
+}
+
+int			proceed(char ***env, t_res **res)
 {
 	char				*line;
 	t_general			*gen_list;
@@ -50,6 +86,8 @@ int			proceed() //char ***env, t_res **res
 		free(line);
 		return (1);
 	}
+	// print(gen_list);
+	execute_gen_lists(gen_list, env, res);
 	return (0);
 }
 
@@ -59,14 +97,14 @@ int			main(void)
 	char				**env;
 	t_res				*res;
 
-	// signals();
+	signals();
 	res = get_reserve(environ);
 	env = set_my_env(environ, 0, 0, 0);
 	ft_putstr("@>");
 	while (1)
 	{
-		if (proceed() == 0)   // &env, &res
-			ft_putstr("@>");
+		proceed(&env, &res);
+		ft_putstr("@>");
 	}
 	return (0);
 }

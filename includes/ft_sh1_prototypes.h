@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 18:15:24 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/28 12:51:05 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/29 17:27:37 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ char	**get_paths(char *var, char **env);
 t_res	*get_reserve(char **env);
 char	**get_reserved_paths(void);
 char	*dir_content(char *path, char *name);
+
 void	execute_command(char **cmd, char **env, t_res *res);
-int		builtins(char **cmd, char ***environ, t_res **res);
+void	execute_pipe_lists(t_pipe *pipe_list, int nbr_pipes, char **env, t_res *res);
+
+int		is_builtin(char **cmd);
+int		execute_builtin(char **cmd, char ***environ, t_res **res);
 char	**set_my_env(char **environ, char *str, int cmp, int flag);
 void	setenv_builtin(char **cmd, char ***env, t_res **res);
 void	unsetenv_builtin(char **cmd, char ***env);
@@ -41,8 +45,12 @@ char	*second_try(char *name, char **env);
 int		check_too_many_args(t_cd *lst, char **cmd);
 int		get_len(char **ptr, int flag);
 int		compare(char *cmd, char *env);
+
+char	**get_cmd(char *line);
 char	*ft_trim_quot_marks(char *str);
 int		ft_len_to_char(char *str, char ch1, char ch2);
+int		ft_count_char(char *str, int ch);
+
 void	err_msg(char *err);
 void	cd_errors(t_cd **lst);
 void	cd_options_err(char a);

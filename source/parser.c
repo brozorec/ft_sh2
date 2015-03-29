@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:52:07 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/28 13:19:48 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/29 13:52:32 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,26 @@ char
 	return (cmd);
 }
 
+char
+	**get_cmd(char *line)   // ,char **env, t_res **res
+{
+	// int					i;
+	int					len;
+	char				**cmd;
 
-// if (unmatched_quot(line) == -1 || (len = count_args(line)) == 0)
-// 		return (0);
-// 	*cmd = (char **)malloc(sizeof(char *) * (len + 1));
-// 	(*cmd)[len] = 0;
-// 	*cmd = split_line(line, *cmd);
-// 	while ((*cmd)[i])
-// 	{
-// 		if (((*cmd)[i] = ft_trim_quot_marks((*cmd)[i])) == 0)
-// 			return (0);
-// 		if (check_if_home(&(*cmd)[i], env, res) == -1)
-// 			return (0);
-// 		++i;
-// 	}
+	// i = 1;
+	if (unmatched_quot(line) == -1 || (len = count_args(line)) == 0)
+		return (0);
+	cmd = (char **)malloc(sizeof(char *) * (len + 1));
+	cmd[len] = 0;
+	cmd = split_line(line, cmd);
+	// while (cmd[i])
+	// {
+	// 	if ((cmd)[i] = ft_trim_quot_marks(cmd[i])) == 0)
+	// 		return (0);
+	// 	if (check_if_home(&(*cmd)[i], env, res) == -1)
+	// 		return (-1);
+	// 	++i;
+	// }
+	return (cmd);
+}
