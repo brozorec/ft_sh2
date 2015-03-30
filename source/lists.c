@@ -96,10 +96,7 @@ t_pipe
 		else if ((str = ft_strstr(save, ">")))
 		{
 			save = (str + 1);
-			// printf("%s\n", pipe_list->pipe_line);
 			pipe_list->file_for_out = get_redir_file(str);
-			// printf("%s\n", pipe_list->pipe_line);
-			// printf("%s\n", pipe_list->file_for_out);
 			++(pipe_list->flag_1);
 		}
 		else

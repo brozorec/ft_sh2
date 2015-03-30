@@ -54,11 +54,11 @@ typedef struct			s_reserved
 
 typedef struct			s_pipe
 {
+	int					num;
 	char				*pipe_line;
 	char				**cmd_tab;
 	char				*file_for_out;
 	char				*file_for_in;
-	int					num;
 	int					flag_1;
 	int					flag_2;
 	int					flag_3;

@@ -25,6 +25,7 @@ SRC=		source/main.c \
 			source/parser.c \
 			source/parser_funcs.c \
 			source/execution.c \
+			source/execution_funcs.c \
 			source/signals.c \
 			source/errors.c \
 			source/builtins/builtins.c \

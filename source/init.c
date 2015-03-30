@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 17:49:39 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/28 13:20:20 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/30 14:52:49 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_pipe		*pipe_init(void)
 	t_pipe				*pipe_list;
 
 	pipe_list = (t_pipe *)malloc(sizeof(t_pipe));
+	pipe_list->num = 0;
 	pipe_list->pipe_line = 0;
 	pipe_list->cmd_tab = 0;
 	pipe_list->file_for_out = 0;
 	pipe_list->file_for_in = 0;
-	pipe_list->num = 0;
 	pipe_list->flag_1 = 0;
 	pipe_list->flag_2 = 0;
 	pipe_list->flag_3 = 0;

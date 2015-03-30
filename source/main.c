@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:50:48 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/29 18:43:54 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/30 19:10:26 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int			execute_gen_lists(t_general *gen_list, char ***env, t_res **res)
 {
 	while (gen_list)
 	{
-		execute_pipe_lists(gen_list->pipe_list, gen_list->nbr_pipes, *env, *res);
+		execute_pipe_lists(gen_list->pipe_list, gen_list->nbr_pipes, env, res);
 		gen_list = gen_list->next;
 	}
 	return (0);
@@ -82,7 +82,6 @@ int			proceed(char ***env, t_res **res)
 	}
 	if ((gen_list = get_gen_lists(line, gen_list)) == 0)
 	{
-		printf("%s\n", "main");
 		free(line);
 		return (1);
 	}

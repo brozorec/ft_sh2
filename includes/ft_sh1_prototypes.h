@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 18:15:24 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/29 17:27:37 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/30 14:38:40 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ char	**get_reserved_paths(void);
 char	*dir_content(char *path, char *name);
 
 void	execute_command(char **cmd, char **env, t_res *res);
-void	execute_pipe_lists(t_pipe *pipe_list, int nbr_pipes, char **env, t_res *res);
+void	execute_pipe_lists(t_pipe *pipe_list, int nbr_pipes, char ***env, t_res **res);
+void	close_fd_tab(int *fd_tab, int nbr_pipes);
+int		*create_fd_tab(int nbr_pipes);
+void	wait_children(int nbr_pipes);
 
 int		is_builtin(char **cmd);
 int		execute_builtin(char **cmd, char ***environ, t_res **res);
