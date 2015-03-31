@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:52:07 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/29 13:52:32 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/31 20:06:49 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ft_sh1_prototypes.h"
 
 int
-	check_if_home(char **cmd, char **env, t_res **res)
+	check_if_home(char **cmd, char **env, t_res *res)
 {
 	char				*copy;
 
@@ -31,7 +31,7 @@ int
 		ft_strdel(cmd);
 		*cmd = take_env_var("HOME=", ft_strchr(copy, '~') + 1, env);
 		if (*cmd == 0)
-			*cmd = ft_strjoin((*res)->home, ft_strchr(copy, '~') + 1);
+			*cmd = ft_strjoin(res->home, ft_strchr(copy, '~') + 1);
 		free(copy);
 	}
 	return (1);
@@ -119,25 +119,32 @@ char
 }
 
 char
-	**get_cmd(char *line)   // ,char **env, t_res **res
+	**get_cmd(char *line, char **env, t_res *res)
 {
-	// int					i;
+	int					i;
 	int					len;
 	char				**cmd;
 
-	// i = 1;
+	i = 0;
 	if (unmatched_quot(line) == -1 || (len = count_args(line)) == 0)
+	{
+		// ft_putstr_fd("Invalid null command.\n", 2); // @> > toto
 		return (0);
+	}
 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	cmd[len] = 0;
 	cmd = split_line(line, cmd);
-	// while (cmd[i])
+	// if (cmd[0] == 0)
 	// {
-	// 	if ((cmd)[i] = ft_trim_quot_marks(cmd[i])) == 0)
-	// 		return (0);
-	// 	if (check_if_home(&(*cmd)[i], env, res) == -1)
-	// 		return (-1);
-	// 	++i;
+	// 	ft_putstr_fd("Invalid null command.\n", 2);
+	// 	return (0);
 	// }
+	while (cmd[i])
+	{
+		ft_trim_quot_marks(&cmd[i]);
+		if (check_if_home(&(cmd)[i], env, res) == 0)
+			return (0);
+		++i;
+	}
 	return (cmd);
 }

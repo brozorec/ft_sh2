@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/30 14:37:30 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/30 14:37:31 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/31 11:51:47 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,39 @@ int			*create_fd_tab(int nbr_pipes)
 	return (fd_tab);
 }
 
+void		examine_status(int status)
+{
+	if (WTERMSIG(status) == 11)
+		err_msg("Segmentation fault\n");
+	if (WTERMSIG(status) == 10)
+		err_msg("Bus error\n");
+}
+
 void		wait_children(int nbr_pipes)
 {
+	int			status;
+
 	while (nbr_pipes >= 0)
 	{
-		wait(0);
+		waitpid(0, &status, WUNTRACED);
+		examine_status(status);
 		--nbr_pipes;
 	}
+}
+
+char		*path_to_exec(char **cmd, char **env, t_res *res)
+{
+	char		*path;
+
+	path = 0;
+	if (cmd[0][0] == '/' || cmd[0][0] == '.')
+		path = ft_strdup(cmd[0]);
+	else if ((path = lookup_paths("PATH=", cmd[0], env)) == 0
+		&& (path = lookup_paths("PATH=", cmd[0], res->paths)) == 0)
+	{
+		err_msg(cmd[0]);
+		err_msg(": Command not found.\n");
+		exit(0);
+	}
+	return (path);
 }

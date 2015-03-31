@@ -22,8 +22,7 @@ char		**get_reserved_paths(void)
 	tab = (char **)malloc(2 * sizeof(char *));
 	tab[0] = ft_strdup("PATH=");
 	tab[1] = 0;
-	if ((fd = open("/etc/paths", O_RDONLY)) == -1)
-		fd = open("./source/builtins/path", O_RDONLY);
+	fd = open("/etc/paths", O_RDONLY);
 	while (fd != -1 && get_next_line(fd, &line) != 0)
 	{
 		tab[0] = ft_realloc(tab[0], ft_strlen(line) + 1);

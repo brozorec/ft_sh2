@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 19:22:17 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/22 17:19:52 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/31 17:53:17 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,20 @@ int			is_builtin(char **cmd)
 	return (0);
 }
 
-int			execute_builtin(char **cmd, char ***env, t_res **res)
+void		execute_builtin(t_pipe *pipe_list, char ***env, t_res **res, int nbr_pipes)
 {
-	if (!ft_strcmp(cmd[0], "cd"))
-		cd_builtin(cmd, env, res);
-	else if (!ft_strcmp(cmd[0], "exit"))
-		exit_builtin(cmd, env, *res);
-	else if (!ft_strcmp(cmd[0], "env"))
-		env_builtin(cmd, *env);
-	else if (!ft_strcmp(cmd[0], "setenv"))
-		setenv_builtin(cmd, env, res);
-	else if (!ft_strcmp(cmd[0], "unsetenv"))
-		unsetenv_builtin(cmd, env);
-	else if (!ft_strcmp(cmd[0], "pwd"))
+	if (!ft_strcmp(pipe_list->cmd_tab[0], "cd"))
+		cd_builtin(pipe_list->cmd_tab, env, res);
+	else if (!ft_strcmp(pipe_list->cmd_tab[0], "exit"))
+		exit_builtin(pipe_list->cmd_tab, env, *res);
+	else if (!ft_strcmp(pipe_list->cmd_tab[0], "env"))
+		env_builtin(pipe_list->cmd_tab, *env);
+	else if (!ft_strcmp(pipe_list->cmd_tab[0], "setenv"))
+		setenv_builtin(pipe_list->cmd_tab, env, res);
+	else if (!ft_strcmp(pipe_list->cmd_tab[0], "unsetenv"))
+		unsetenv_builtin(pipe_list->cmd_tab, env);
+	else if (!ft_strcmp(pipe_list->cmd_tab[0], "pwd"))
 		pwd_builtin(*env);
-	return (0);
+	if (nbr_pipes || check_flags(pipe_list) == 1)
+		exit(0);
 }

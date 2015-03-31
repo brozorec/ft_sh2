@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 18:15:24 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/30 14:38:40 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/03/31 20:02:23 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,23 @@
 void	signals(void);
 char	*lookup_paths(char *var, char *name, char **env);
 char	**get_paths(char *var, char **env);
-t_res	*get_reserve(char **env);
+t_res	*get_reserve(char ***env);
 char	**get_reserved_paths(void);
 char	*dir_content(char *path, char *name);
 
 void	execute_command(char **cmd, char **env, t_res *res);
+char	*path_to_exec(char **cmd, char **env, t_res *res);
+int		execute_gen_lists(t_general *gen_list, char ***env, t_res **res);
 void	execute_pipe_lists(t_pipe *pipe_list, int nbr_pipes, char ***env, t_res **res);
 void	close_fd_tab(int *fd_tab, int nbr_pipes);
 int		*create_fd_tab(int nbr_pipes);
 void	wait_children(int nbr_pipes);
 
+void	redirections_files(t_pipe *pipe_list, int *fd_tab, int nbr_pipes);
+void	redirections_pipes(t_pipe *pipe_list, int *fd_tab, int j);
+
 int		is_builtin(char **cmd);
-int		execute_builtin(char **cmd, char ***environ, t_res **res);
+void	execute_builtin(t_pipe *pipe_list, char ***environ, t_res **res, int nbr_pipes);
 char	**set_my_env(char **environ, char *str, int cmp, int flag);
 void	setenv_builtin(char **cmd, char ***env, t_res **res);
 void	unsetenv_builtin(char **cmd, char ***env);
@@ -49,8 +54,8 @@ int		check_too_many_args(t_cd *lst, char **cmd);
 int		get_len(char **ptr, int flag);
 int		compare(char *cmd, char *env);
 
-char	**get_cmd(char *line);
-char	*ft_trim_quot_marks(char *str);
+char	**get_cmd(char *line, char **env, t_res *res);
+void	ft_trim_quot_marks(char **str);
 int		ft_len_to_char(char *str, char ch1, char ch2);
 int		ft_count_char(char *str, int ch);
 
@@ -60,8 +65,10 @@ void	cd_options_err(char a);
 void	exit_err(int i);
 
 
-t_general	*get_gen_lists(char *line, t_general *gen_list);
+t_general	*get_gen_lists(char *line, t_general *gen, char **env, t_res *res);
+void		free_gen_list(t_general *gen_list);
 t_general	*gen_init(void);
 t_pipe		*pipe_init(void);
+int			check_flags(t_pipe *pipe_list);
 
 #endif
