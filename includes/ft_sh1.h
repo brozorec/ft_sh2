@@ -59,6 +59,7 @@ typedef struct			s_pipe
 	char				**cmd_tab;
 	char				*file_for_out;
 	char				*file_for_in;
+	int					no_name;
 	int					flag_1;
 	int					flag_2;
 	int					flag_3;

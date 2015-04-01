@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 18:15:24 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/31 20:02:23 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 19:11:22 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	execute_builtin(t_pipe *pipe_list, char ***environ, t_res **res, int nbr_pi
 char	**set_my_env(char **environ, char *str, int cmp, int flag);
 void	setenv_builtin(char **cmd, char ***env, t_res **res);
 void	unsetenv_builtin(char **cmd, char ***env);
+int		compare(char *cmd, char *env);
 void	env_builtin(char **cmd, char **env);
 void	print_env(char **env);
 void	exit_builtin(char **cmd, char ***env, t_res *res);
@@ -52,12 +53,12 @@ int		take_oldpwd(char **cmd, t_cd **lst, char **env);
 char	*second_try(char *name, char **env);
 int		check_too_many_args(t_cd *lst, char **cmd);
 int		get_len(char **ptr, int flag);
-int		compare(char *cmd, char *env);
 
 char	**get_cmd(char *line, char **env, t_res *res);
 void	ft_trim_quot_marks(char **str);
 int		ft_len_to_char(char *str, char ch1, char ch2);
 int		ft_count_char(char *str, int ch);
+int		empty_line(char *line);
 
 void	err_msg(char *err);
 void	cd_errors(t_cd **lst);
@@ -65,10 +66,12 @@ void	cd_options_err(char a);
 void	exit_err(int i);
 
 
-t_general	*get_gen_lists(char *line, t_general *gen, char **env, t_res *res);
-void		free_gen_list(t_general *gen_list);
 t_general	*gen_init(void);
 t_pipe		*pipe_init(void);
-int			check_flags(t_pipe *pipe_list);
+t_general	*get_gen_lists(char *line, t_general *gen, char **env, t_res *res);
+t_pipe		*get_redirections_input(t_pipe *pipe);
+t_pipe		*get_redirections_output(t_pipe *pipe);
+int			check_flags(t_pipe *pipe_list, int nbr_pipes);
+void		free_gen_list(t_general *gen_list);
 
 #endif

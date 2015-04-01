@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 17:57:49 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/31 17:57:50 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 19:34:19 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,40 @@ void		redir_here_document(char *tag, int *fd_tab, int nbr_pipes)
 	wait(0);
 }
 
+void		redir_flag_3(t_pipe *pipe_list)
+{
+	int			fd_file;
+
+	if ((fd_file = open(pipe_list->file_for_in, O_RDWR)) == -1)
+	{
+		err_msg(pipe_list->file_for_in);
+		err_msg(": No such file or directory.\n");
+		exit(0);
+	}
+	dup2(fd_file, STDIN);
+	close(fd_file);
+}
+
 void		redirections_files(t_pipe *pipe_list, int *fd_tab, int nbr_pipes)
 {
 	int			fd_file;
 
 	if (pipe_list->flag_1)
 	{
-		fd_file = open(pipe_list->file_for_out, O_TRUNC | O_CREAT | O_RDWR, ACCESSPERMS);
+		fd_file = open(pipe_list->file_for_out,
+			O_TRUNC | O_CREAT | O_RDWR, ACCESSPERMS);
 		dup2(fd_file, STDOUT);
 		close(fd_file);
 	}
 	else if (pipe_list->flag_2)
 	{
-		fd_file = open(pipe_list->file_for_out, O_CREAT | O_APPEND | O_RDWR, ACCESSPERMS);
+		fd_file = open(pipe_list->file_for_out,
+			O_CREAT | O_APPEND | O_RDWR, ACCESSPERMS);
 		dup2(fd_file, STDOUT);
 		close(fd_file);
 	}
 	if (pipe_list->flag_3)
-	{
-		if ((fd_file = open(pipe_list->file_for_in, O_RDWR)) == -1)
-		{
-			err_msg(pipe_list->file_for_in);
-			err_msg(": No such file or directory.\n");
-			exit(0);
-		}
-		dup2(fd_file, STDIN);
-		close(fd_file);
-	}
+		redir_flag_3(pipe_list);
 	else if (pipe_list->flag_4)
 		redir_here_document(pipe_list->file_for_in, fd_tab, nbr_pipes);
 }

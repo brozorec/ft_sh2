@@ -19,6 +19,7 @@ NAME=		ft_minishell2
 SRC=		source/main.c \
 			source/init.c \
 			source/lists.c \
+			source/lists_redir.c \
 			source/get_next_line.c \
 			source/paths.c \
 			source/environ.c \

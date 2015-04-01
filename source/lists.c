@@ -6,143 +6,80 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 13:20:48 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/31 19:57:36 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 19:42:22 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
 #include "ft_sh1_prototypes.h"
 
+void
+	free_gen_list(t_general *gen_list)
+{
+	t_general			*head_gen;
+	t_pipe				*head_pipe;
+
+	while (gen_list)
+	{
+		while (gen_list->pipe_list)
+		{
+			free(gen_list->pipe_list->pipe_line);
+			ft_str3del(gen_list->pipe_list->cmd_tab);
+			free(gen_list->pipe_list->file_for_in);
+			free(gen_list->pipe_list->file_for_out);
+			head_pipe = gen_list->pipe_list->next;
+			free(gen_list->pipe_list);
+			gen_list->pipe_list = head_pipe;
+		}
+		head_gen = gen_list->next;
+		free(gen_list);
+		gen_list = head_gen;
+	}
+}
+
 int
-	check_flags(t_pipe *pipe)
+	check_flags(t_pipe *p, int nbr_pipes)
 {
-	int					i;
-
-	i = 0;
-	if (pipe->flag_1 || pipe->flag_2 || pipe->flag_3 || pipe->flag_4)
-		i = 1;
-	return (i);
-}
-
-char
-	*get_redir_file(char *line)
-{
-	char				*file;
-	char				*str;
-	int					len;
-	int					i;
-
-	file = 0;
-	i = 0;
-	str = line;
-	while (line[i] == '>' || line[i] == '<')
-		line[i++] = ' ';
-	while (line[i] == ' ' || line[i] == '\t')
-		++i;
-	if (line[i] == '>' || line[i] == '<')
-		return (0);
-	len = ft_len_to_char(&line[i], ' ', '\t');
-	file = ft_strnew(len);
-	file = ft_strncpy(file, &line[i], len);
-	if (ft_strlen(file) == 0)
-	{
-		ft_putstr_fd("Missing name for redirect.\n", 2);
-		return (0);
-	}
-	str = ft_memset(&line[i], ' ', len);
-	return (file);
+	if (p->flag_2 > 1 || p->flag_1 > 1 || (p->flag_2 == 1 && p->flag_1 == 1))
+		return (2);
+	if (p->num != nbr_pipes && (p->flag_1 || p->flag_2))
+		return (2);
+	if (p->flag_4 > 1 || p->flag_3 > 1 || (p->flag_4 == 1 && p->flag_3 == 1))
+		return (3);
+	if (p->num > 0 && (p->flag_3 || p->flag_4))
+		return (3);
+	if (p->flag_1 || p->flag_2 || p->flag_3 || p->flag_4)
+		return (1);
+	return (0);
 }
 
 t_pipe
-	*get_redirections_input(t_pipe *pipe)
+	*examine_pipe(t_pipe *pipe, int nbr_pipes, char **env, t_res *res)
 {
-	char				*str;
-	char				*save;
-
-	save = pipe->pipe_line;
-	while (save)
+	pipe = get_redirections_output(pipe);
+	pipe = get_redirections_input(pipe);
+	if (pipe->no_name)
 	{
-		if ((str = ft_strstr(save, "<<")))
-		{
-			save = (str + 2);
-			pipe->file_for_in = get_redir_file(str);
-			++(pipe->flag_4);
-		}
-		else if ((str = ft_strstr(save, "<")))
-		{
-			save = (str + 1);
-			pipe->file_for_in = get_redir_file(str);
-			++(pipe->flag_3);
-		}
-		else
-			save = str;
-	}
-	if (pipe->flag_4 > 1 || pipe->flag_3 > 1 || (pipe->flag_4 == 1 && pipe->flag_3 == 1))
+		ft_putstr_fd("Ambiguous or missing name for redirect.\n", 2);
 		return (0);
-	return (pipe);
-}
-
-t_pipe
-	*get_redirections_output(t_pipe *pipe)
-{
-	char				*str;
-	char				*save;
-
-	save = pipe->pipe_line;
-	while (save)
-	{
-		if ((str = ft_strstr(save, ">>")))
-		{
-			save = (str + 2);
-			pipe->file_for_out = get_redir_file(str);
-			++(pipe->flag_2);
-		}
-		else if ((str = ft_strstr(save, ">")))
-		{
-			save = (str + 1);
-			pipe->file_for_out = get_redir_file(str);
-			++(pipe->flag_1);
-		}
-		else
-			save = str;
 	}
-	if (pipe->flag_2 > 1 || pipe->flag_1 > 1 || (pipe->flag_2 == 1 && pipe->flag_1 == 1))
-		return (0);
-	return (pipe);
-}
-
-t_pipe
-	*examine_pipe_line(t_pipe *pipe, int nbr_pipes, char **env, t_res *res)
-{
-	if ((pipe = get_redirections_output(pipe)) == 0)
+	if (check_flags(pipe, nbr_pipes) == 2)
 	{
 		ft_putstr_fd("Ambiguous output redirect.\n", 2);
 		return (0);
 	}
-	if (pipe->num != nbr_pipes && (pipe->flag_1 || pipe->flag_2))
-	{
-		ft_putstr_fd("Ambiguous output redirect.\n", 2);
-		return (0);
-	}
-	if ((pipe = get_redirections_input(pipe)) == 0)
+	if (check_flags(pipe, nbr_pipes) == 3)
 	{
 		ft_putstr_fd("Ambiguous input redirect.\n", 2);
 		return (0);
 	}
-	if (pipe->num > 0 && (pipe->flag_3 || pipe->flag_4))
-	{
-		ft_putstr_fd("Ambiguous input redirect.\n", 2);
-		return (0);
-	}
-	if (!pipe->file_for_out && !pipe->file_for_in && check_flags(pipe))
-		return (0);
 	if ((pipe->cmd_tab = get_cmd(pipe->pipe_line, env, res)) == 0)
 		return (0);
 	return (pipe);
 }
 
 t_pipe
-	*get_pipe_lists(char *gen_line, int nbr_pipes, char **env, t_res *res)
+	*get_pp(char *gen_line, int nbr_pipes, char **env, t_res *res)
 {
 	int					i;
 	char				**tab;
@@ -157,7 +94,7 @@ t_pipe
 	{
 		pipe_list->pipe_line = ft_strdup(tab[i]);
 		pipe_list->num = i;
-		if ((pipe_list = examine_pipe_line(pipe_list, nbr_pipes, env, res)) == 0)
+		if ((pipe_list = examine_pipe(pipe_list, nbr_pipes, env, res)) == 0)
 			return (0);
 		if (tab[++i])
 		{
@@ -165,7 +102,7 @@ t_pipe
 			pipe_list = pipe_list->next;
 		}
 	}
-	if (nbr_pipes != i - 1)
+	if (pipe_list->num != nbr_pipes)
 	{
 		ft_putstr_fd("Invalid null command.\n", 2);
 		return (0);
@@ -189,7 +126,7 @@ t_general
 	{
 		gen->gen_line = ft_strdup(tab[i]);
 		gen->nbr_pipes = ft_count_char(gen->gen_line, '|');
-		if (!(gen->pipe_list = get_pipe_lists(gen->gen_line, gen->nbr_pipes, env, res)))
+		if (!(gen->pipe_list = get_pp(gen->gen_line, gen->nbr_pipes, env, res)))
 		{
 			free_gen_list(gen);
 			return (0);

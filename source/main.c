@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:50:48 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/31 19:50:15 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 17:40:11 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,6 @@ void		exit_eof(char ***env, t_res **res)
 	exit(0);
 }
 
-void		free_gen_list(t_general *gen_list)
-{
-	t_general			*head_gen;
-	t_pipe				*head_pipe;
-
-	while (gen_list)
-	{
-		while (gen_list->pipe_list)
-		{
-			free(gen_list->pipe_list->pipe_line);
-			ft_str3del(gen_list->pipe_list->cmd_tab);
-			free(gen_list->pipe_list->file_for_in);
-			free(gen_list->pipe_list->file_for_out);
-			head_pipe = gen_list->pipe_list->next;
-			free(gen_list->pipe_list);
-			gen_list->pipe_list = head_pipe;
-		}
-		head_gen = gen_list->next;
-		free(gen_list);
-		gen_list = head_gen;
-	}
-}
-
 int			proceed(char ***env, t_res **res)
 {
 	char				*line;
@@ -64,16 +41,15 @@ int			proceed(char ***env, t_res **res)
 	gen_list = 0;
 	if (get_next_line(0, &line) == 0)
 		exit_eof(env, res);
-	if (ft_strlen(line) == 0)
+	if (empty_line(line) == 0)
 	{
 		free(line);
-		return (1);
+		return (0);
 	}
 	if ((gen_list = get_gen_lists(line, gen_list, *env, *res)) == 0)
 	{
-		// ft_putstr_fd("main\n", 2);
 		free(line);
-		return (1);
+		return (0);
 	}
 	execute_gen_lists(gen_list, env, res);
 	free(line);

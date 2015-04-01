@@ -35,6 +35,7 @@ t_pipe		*pipe_init(void)
 	pipe_list->cmd_tab = 0;
 	pipe_list->file_for_out = 0;
 	pipe_list->file_for_in = 0;
+	pipe_list->no_name = 0;
 	pipe_list->flag_1 = 0;
 	pipe_list->flag_2 = 0;
 	pipe_list->flag_3 = 0;

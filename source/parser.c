@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:52:07 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/31 20:06:49 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 14:02:28 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,17 +128,12 @@ char
 	i = 0;
 	if (unmatched_quot(line) == -1 || (len = count_args(line)) == 0)
 	{
-		// ft_putstr_fd("Invalid null command.\n", 2); // @> > toto
+		ft_putstr_fd("Invalid null command.\n", 2);
 		return (0);
 	}
 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	cmd[len] = 0;
 	cmd = split_line(line, cmd);
-	// if (cmd[0] == 0)
-	// {
-	// 	ft_putstr_fd("Invalid null command.\n", 2);
-	// 	return (0);
-	// }
 	while (cmd[i])
 	{
 		ft_trim_quot_marks(&cmd[i]);

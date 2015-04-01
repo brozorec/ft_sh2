@@ -6,7 +6,7 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 15:19:59 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/23 15:20:00 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/01 19:44:36 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int			ft_len_to_char(char *str, char ch1, char ch2)
 	return (i);
 }
 
-int 		ft_count_char(char *str, int ch)
+int			ft_count_char(char *str, int ch)
 {
-	int 				i;
-	int 				count;
+	int					i;
+	int					count;
 
 	i = 0;
 	count = 0;
@@ -60,4 +60,20 @@ int 		ft_count_char(char *str, int ch)
 		++i;
 	}
 	return (count);
+}
+
+int			empty_line(char *line)
+{
+	int					i;
+
+	i = 0;
+	if (ft_strlen(line) == 0)
+		return (0);
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t')
+			return (1);
+		++i;
+	}
+	return (0);
 }

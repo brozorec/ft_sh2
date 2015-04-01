@@ -13,7 +13,8 @@
 #include "ft_sh1.h"
 #include "ft_sh1_prototypes.h"
 
-int			is_builtin(char **cmd)
+int
+	is_builtin(char **cmd)
 {
 	if (!ft_strcmp(cmd[0], "cd") || !ft_strcmp(cmd[0], "setenv") ||
 		!ft_strcmp(cmd[0], "unsetenv") || !ft_strcmp(cmd[0], "exit") ||
@@ -24,7 +25,8 @@ int			is_builtin(char **cmd)
 	return (0);
 }
 
-void		execute_builtin(t_pipe *pipe_list, char ***env, t_res **res, int nbr_pipes)
+void
+	execute_builtin(t_pipe *pipe_list, char ***env, t_res **res, int nbr_pipes)
 {
 	if (!ft_strcmp(pipe_list->cmd_tab[0], "cd"))
 		cd_builtin(pipe_list->cmd_tab, env, res);
@@ -38,6 +40,6 @@ void		execute_builtin(t_pipe *pipe_list, char ***env, t_res **res, int nbr_pipes
 		unsetenv_builtin(pipe_list->cmd_tab, env);
 	else if (!ft_strcmp(pipe_list->cmd_tab[0], "pwd"))
 		pwd_builtin(*env);
-	if (nbr_pipes || check_flags(pipe_list) == 1)
+	if (nbr_pipes || check_flags(pipe_list, nbr_pipes) == 1)
 		exit(0);
 }
