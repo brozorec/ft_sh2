@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sh1.h"
-#include "ft_sh1_prototypes.h"
+#include "ft_sh2.h"
+#include "ft_sh2_prototypes.h"
 
 void		pwd_builtin(char **env)
 {

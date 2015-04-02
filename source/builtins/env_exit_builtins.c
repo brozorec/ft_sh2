@@ -6,12 +6,12 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/26 19:50:44 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/24 11:55:11 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/02 15:06:18 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sh1.h"
-#include "ft_sh1_prototypes.h"
+#include "ft_sh2.h"
+#include "ft_sh2_prototypes.h"
 
 void		print_env(char **env)
 {
@@ -44,8 +44,8 @@ void		env_builtin(char **cmd, char **env)
 	char		*line;
 	char		*path;
 
-	if ((fd = open("/etc/paths", O_RDONLY)) == -1)
-		fd = open("./source/builtins/path", O_RDONLY);
+	path = 0;
+	fd = open("/etc/paths", O_RDONLY);
 	while (fd != -1 && get_next_line(fd, &line) != 0)
 	{
 		if ((path = dir_content(line, "env")) != 0)
@@ -55,7 +55,8 @@ void		env_builtin(char **cmd, char **env)
 		}
 		free(line);
 	}
-	close(fd);
+	if (fd != -1)
+		close(fd);
 	fork_env(path, cmd, env);
 	wait(0);
 	free(path);
@@ -64,7 +65,8 @@ void		env_builtin(char **cmd, char **env)
 void		free_env_cmd_res(char ***cmd, char ***env, t_res **res)
 {
 	ft_str3del(*env);
-	ft_str3del(*cmd);
+	if (cmd)
+		ft_str3del(*cmd);
 	ft_str3del((*res)->paths);
 	free((*res)->home);
 	free((*res));

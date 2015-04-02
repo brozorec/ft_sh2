@@ -6,12 +6,12 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/23 15:29:46 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/02/23 17:43:49 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/02 14:54:51 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sh1.h"
-#include "ft_sh1_prototypes.h"
+#include "ft_sh2.h"
+#include "ft_sh2_prototypes.h"
 
 void
 	lst_init_or_free(t_cd **lst)

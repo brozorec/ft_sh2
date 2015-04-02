@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sh1.h                                           :+:      :+:    :+:   */
+/*   ft_sh2.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 15:51:32 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/29 18:11:30 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/02 14:51:52 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SH1_H
-# define FT_SH1_H
+#ifndef FT_SH2_H
+# define FT_SH2_H
 
 # include <dirent.h>
 # include <stdlib.h>
@@ -21,8 +21,6 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include "get_next_line.h"
-# include <stdio.h> // not authorized
-# include <errno.h> // not
 
 # define STDIN 0
 # define STDOUT 1
@@ -46,11 +44,6 @@ typedef struct			s_reserved
 	char				**paths;
 	char				*home;
 }						t_res;
-
-/*  flag_1 = > 	*/
-/*  flag_2 = >> */
-/*  flag_3 = < 	*/
-/*  flag_4 = << */
 
 typedef struct			s_pipe
 {

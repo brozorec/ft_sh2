@@ -6,12 +6,12 @@
 /*   By: bbarakov <bbarakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 15:29:07 by bbarakov          #+#    #+#             */
-/*   Updated: 2015/03/24 12:37:28 by bbarakov         ###   ########.fr       */
+/*   Updated: 2015/04/02 13:11:04 by bbarakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sh1.h"
-#include "ft_sh1_prototypes.h"
+#include "ft_sh2.h"
+#include "ft_sh2_prototypes.h"
 
 int			already_set(char **cmd, char ***env)
 {
@@ -74,14 +74,12 @@ void		setenv_builtin(char **cmd, char ***env, t_res **res)
 	proceed_set(cmd, env);
 	if (ft_strcmp("PATH", cmd[1]) == 0)
 	{
-		free((*res)->paths[0]);
 		path = take_env_var("PATH=", 0, *env);
 		(*res)->paths[0] = ft_strjoin("PATH=", path);
 		free(path);
 	}
 	if (ft_strcmp("HOME", cmd[1]) == 0)
 	{
-		free((*res)->home);
 		(*res)->home = take_env_var("HOME=", 0, *env);
 	}
 }

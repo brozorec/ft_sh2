@@ -17,19 +17,19 @@ CFLAGS=		-Wall -Werror -Wextra
 NAME=		ft_minishell2
 
 SRC=		source/main.c \
-			source/init.c \
-			source/lists.c \
-			source/lists_redir.c \
-			source/get_next_line.c \
-			source/paths.c \
 			source/environ.c \
-			source/parser.c \
-			source/parser_funcs.c \
-			source/redirections.c \
-			source/execution.c \
-			source/execution_funcs.c \
 			source/signals.c \
 			source/errors.c \
+			source/paths.c \
+			source/parser/init.c \
+			source/parser/lists.c \
+			source/parser/lists_redir.c \
+			source/parser/get_next_line.c \
+			source/parser/parser.c \
+			source/parser/parser_funcs.c \
+			source/exec/redirections.c \
+			source/exec/execution.c \
+			source/exec/execution_funcs.c \
 			source/builtins/builtins.c \
 			source/builtins/cd_builtin.c \
 			source/builtins/cd_builtin_funcs.c \
